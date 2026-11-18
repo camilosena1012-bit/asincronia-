@@ -1,0 +1,43 @@
+Parte 1: ¿Por qué existe el código asíncrono?
+¿Qué se imprime si cambias el 0 por 2000? ¿Cambia el orden?
+
+Respuesta: Se imprime exactamente en el mismo orden: 1. Pido la pizza, luego 3. Mientras tanto, veo televisión, y por último 2. La pizza está lista. La única diferencia es que habrá una pausa real de 2 segundos antes de mostrar el mensaje 2. El orden no cambia porque cualquier setTimeout pasa primero por las APIs del entorno y luego a la cola de tareas, esperando obligatoriamente a que la pila de llamadas (call stack) quede vacía.
+
+Menciona dos operaciones de una aplicación real que deberían ser asíncronas y explica por qué.
+
+Respuesta:
+
+Consultar el catálogo de un restaurante en una app de domicilios: Si fuera síncrona, congelaría por completo la interfaz del usuario mientras espera la respuesta de la base de datos.
+
+Procesar un pago con tarjeta: Depende de pasarelas externas de red y bancos, por lo que la asincronía permite que la aplicación siga respondiendo a las acciones del usuario mientras se procesa la transacción.
+
+Parte 2: Callbacks
+¿Qué pasa si en dividir quitas el return después de llamar al callback con el error?
+
+Respuesta: Si se omite el return, la ejecución continúa y llama al callback dos veces: primero reportando el error y de inmediato ejecutando la línea de éxito con un valor inválido (Infinity o NaN), generando comportamientos erráticos.
+
+¿Por qué conviene que el error sea el primer parámetro y no el segundo?
+
+Respuesta: Es la convención error-first de Node.js, la cual obliga al programador a validar de manera explícita si ocurrió un fallo antes de intentar procesar el resultado.
+
+Parte 3: Promesas
+En el ejemplo de Promise.all, ¿por qué el tiempo total es de unos 2 segundos?
+
+Respuesta: Porque las promesas se ejecutan simultáneamente en paralelo. El tiempo total de Promise.all equivale estrictamente a lo que tarde la operación más lenta del grupo (en este caso, 2 segundos), y no a la suma de todas.
+
+¿Qué pasa si en una cadena olvidas el return dentro de un .then()?
+
+Respuesta: El .then() devuelve implícitamente undefined de inmediato, lo que rompe la cadena de asincronía y hace que el siguiente .then() reciba undefined en lugar de esperar el resultado de la sub-promesa.
+
+Parte 4: Async/await
+¿Por qué console.log(saludar()) no imprime "Hola"?
+
+Respuesta: Porque cualquier función declarada con async retorna de manera automática una Promesa en estado cumplido, no el texto plano.
+
+Tienes que traer el perfil de un usuario y, con su ciudad, el clima de su ciudad, además de las noticias del día. ¿Qué tareas van en secuencia y cuáles en paralelo?
+
+Respuesta:
+
+En secuencia: Traer el perfil del usuario y luego consultar el clima de su ciudad, ya que la petición del clima depende directamente del dato de la ciudad obtenido en el perfil.
+
+En paralelo: Consultar las noticias del día, ya que es un proceso independiente que no necesita esperar los datos del usuario.

@@ -1,4 +1,4 @@
-// datos.js
+
 const empleados = [
   { id: 1, nombre: 'Miguel' },
   { id: 2, nombre: 'Yenny' },
@@ -15,4 +15,3 @@ const cargos = [
   { id: 2, cargo: 'Coordinadora', idempleado: 2 },
 ];
 
-module.exports = { empleados, salarios, cargos };
